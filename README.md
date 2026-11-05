@@ -108,6 +108,8 @@ MediBook/
 
 ## 🚀 Getting Started
 
+> **New to Zoho CRM?** Follow the step-by-step [Zoho CRM Setup Guide](SETUP_ZOHO_CRM.md) to configure your CRM from scratch before deploying MediBook.
+
 ### Prerequisites
 - **Zoho CRM** Enterprise or Ultimate edition (required for Zia Agents)
 - **Services module** enabled in Zoho CRM
