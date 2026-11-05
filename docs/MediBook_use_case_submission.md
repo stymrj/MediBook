@@ -1,6 +1,6 @@
 # Zia Agents — Use Case Submission
 
-**Agent name:** AppointPal
+**Agent name:** MediBook
 
 **Agent tagline:** Turns booking emails, website chats, and staff requests into confirmed Zoho CRM appointments — automatically, without double-booking, dropping a request, or ever inventing a detail.
 
@@ -10,9 +10,9 @@
 
 **What problem does the agent solve? / What does it do?**
 
-Appointment-driven service businesses — home services, automobile workshops, salons and spas, clinics, and field-service teams (HVAC, plumbing, electrical) — lose bookings to slow, manual scheduling. For every request, a human has to read the message, find the right customer record, check the live service catalog, verify that a qualified technician is actually free, avoid double-booking, create the appointment with all mandatory fields, tag it, and send a confirmation. Doing this by hand across email, a website chat widget, and internal staff requests is slow, inconsistent, and does not scale.
+Appointment-driven healthcare providers — multi-specialty clinics, dental centers, diagnostic labs, physiotherapy clinics, and hospitals — lose bookings to slow, manual scheduling. For every request, a human has to read the message, find the right customer record, check the live service catalog, verify that a qualified doctor is actually free, avoid double-booking, create the appointment with all mandatory fields, tag it, and send a confirmation. Doing this by hand across email, a website chat widget, and internal staff requests is slow, inconsistent, and does not scale.
 
-**AppointPal** is a Zia Agent built on Zoho CRM that books, reschedules, and cancels service appointments across three channels while enforcing every business rule. It runs in three modes from a single shared booking domain:
+**MediBook** is a Zia Agent built on Zoho CRM that books, reschedules, and cancels service appointments across three channels while enforcing every business rule. It runs in three modes from a single shared booking domain:
 
 - **Email (autonomous):** reads an inbound customer email and, with no human confirming each step, either books the appointment and replies to confirm, asks once for anything genuinely missing, reschedules an existing appointment, or escalates to a Task — always exactly one outcome per email.
 - **Website chatbot (conversational):** a warm, customer-facing assistant that never exposes any internal system, collects name and email up front, and confirms before every write. New visitors are captured as a Lead with their preferences, not a direct booking.
@@ -22,25 +22,25 @@ The core promise across all three: the CRM is the single source of truth, servic
 
 **One business scenario**
 
-A home-services company receives this email from an existing customer:
+A multi-specialty clinic receives this email from an existing patient:
 
-> "Hi, could you book me a Car cleaning appointment for Friday, July 10th at 02:00 PM? Any available technician is fine. My address is 42 Lake View Street, Chennai. Regards, Sudev G"
+> "Hi, could you book me a General Consultation with Dr. Sharma for Friday, July 10th at 02:00 PM? Any available doctor is fine. My address is 42 Lake View Street, Chennai. Regards, Sudev G"
 
-AppointPal reads the email, matches the sender to their Contact record, confirms "Car cleaning" against the live Services catalog, resolves "any technician" to a qualified member who is actually free at 2:00 PM (checking both leave windows and existing appointments), creates the appointment at the client's address, tags it `Zia Agent - AppointPal`, and replies in the same thread with a confirmation signed `Zia Agent - AppointPal` — all without a human touching it.
+MediBook reads the email, matches the sender to their Contact record, confirms "General Consultation" against the live Services catalog, resolves "any doctor" to a qualified physician who is actually free at 2:00 PM (checking both leave windows and existing appointments), creates the appointment at the patient's address, tags it `MediBook`, and replies in the same thread with a confirmation signed `MediBook` — all without a human touching it.
 
 **Quick examples of inputs**
 
-- Email: *"Book me an AC repair next Monday at 10 am, my address is 12 Anna Nagar."*
-- Website chat: *"Is Priya free Saturday morning for a blowout?"*
-- Staff (in CRM): *"Book James for AC Repair on Thursday 2 PM with Alex."*
-- Reschedule: *"Something came up — can we move my cleaning to Friday?"*
+- Email: *"Book me a Dental Checkup next Monday at 10 am, my address is 12 Anna Nagar."*
+- Website chat: *"Is Dr. Patel free Saturday morning for a Physiotherapy session?"*
+- Staff (in CRM): *"Book James for Cardiac Consultation on Thursday 2 PM with Dr. Alex."*
+- Reschedule: *"Something came up — can we move my consultation to Friday?"*
 - Human handoff: *"I'd rather not deal with a bot — can someone call me?"* → escalates to a Task for the record owner.
 
 ---
 
 ## Walkthrough
 
-AppointPal runs one shared booking engine behind three channel-specific front doors.
+MediBook runs one shared booking engine behind three channel-specific front doors.
 
 **Shared booking engine (all modes)**
 
@@ -48,7 +48,7 @@ AppointPal runs one shared booking engine behind three channel-specific front do
 2. **Confirm the service live** — always fetch the current active list from the Services module; map the request to a real record; never use a service name from memory.
 3. **Resolve the provider and check availability** — the assigned member (Owner) must be a member of the chosen service, and must pass a two-layer availability check: no overlapping unavailability window AND no conflicting existing appointment.
 4. **Validate** — future start time, location type matching the service (Business vs Client Address), and a full address captured for client-location services.
-5. **Create the appointment** with all mandatory fields, then **tag it** `Zia Agent - AppointPal` (get → create if absent → associate), then **notify** the customer.
+5. **Create the appointment** with all mandatory fields, then **tag it** `Zia Agent - MediBook` (get → create if absent → associate), then **notify** the customer.
 
 **Email mode (autonomous)** — *First,* it reads the triggering email (resolving the CRM internal message-id, not the raw RFC-822 id) and extracts every stated detail into a structured table. *Then,* it classifies the email into exactly one type — human-handoff, new booking, reply to a pending ask, reschedule, or neither — and runs the required-to-book checklist against the extracted details. *Finally,* it produces exactly one outcome: auto-book + confirm, one missing-details ask (max two per request), a reschedule via a minimal update, or escalation to a Task. Because each email is a fresh, stateless run, the customer's email thread itself serves as the memory.
 
@@ -64,7 +64,7 @@ AppointPal runs one shared booking engine behind three channel-specific front do
 |----------|----------|
 | **Purpose** | Automates end-to-end appointment scheduling — booking, rescheduling, and cancelling — across inbound email, a website chat widget, and internal CRM staff, enforcing every business rule so no request is dropped, duplicated, or double-booked. |
 | **Products** | Zoho CRM (Services module `Services__s` and Appointments module `Appointments__s`); Zia Agent Studio. Email path additionally requires the org mailbox integrated with CRM via IMAP/POP3. |
-| **Best suited for** | Appointment-driven service businesses: home services (cleaning, appliance/pest/HVAC), automobile service, wellness & beauty (salons, spas), healthcare & professional consultation, and field services (HVAC, plumbing, electrical). |
+| **Best suited for** | Appointment-driven healthcare providers: multi-specialty clinics, dental centers, diagnostic labs, physiotherapy clinics, hospitals, and specialist practices. |
 | **Complexity** | High — three deployment modes, a fully autonomous email path with stateless thread reconstruction, two-layer availability checking, strict anti-fabrication validation, and idempotent writes with tagging and escalation. |
 | **Deployment mode** | Connection-based (Zoho CRM connection). The autonomous path is email-triggered; the chatbot runs as a website chat widget; the staff assistant runs inside CRM. |
 | **Trigger** | Incoming customer email (autonomous path); chat message from a website visitor (chatbot); staff invocation inside CRM (chat/button). |
@@ -104,7 +104,7 @@ The full agent instructions are defined in `instructor_appointment_setter_agent.
 **Identity.** A Zia-powered AI agent for scheduling, rescheduling, and cancelling service appointments in Zoho CRM — warm, professional, efficient. Sole function: move customers from inquiry to confirmed appointment with minimum friction while following all business rules. Does not handle complaints, pricing, refunds, or disputes — those escalate.
 
 **Path selection.**
-- *Email trigger:* follow `kb_email_booking_path.md` exclusively — auto-book when complete, ask when a detail is missing, escalate to a Task when unresolvable, with no human confirming each step. Auto-created appointments get `Additional_Information = "Auto-booked from email by AppointPal"` and tag `Zia Agent - AppointPal` (the same tag is applied to agent-created Tasks). Every customer email ends with the signature `Zia Agent - AppointPal`. Reschedules use the reschedule flow; cancellations and human-handoff requests always become a Task; max two ask emails; one outcome per email.
+- *Email trigger:* follow `kb_email_booking_path.md` exclusively — auto-book when complete, ask when a detail is missing, escalate to a Task when unresolvable, with no human confirming each step. Auto-created appointments get `Additional_Information = "Auto-booked from email by MediBook"` and tag `Zia Agent - MediBook` (the same tag is applied to agent-created Tasks). Every customer email ends with the signature `Zia Agent - MediBook`. Reschedules use the reschedule flow; cancellations and human-handoff requests always become a Task; max two ask emails; one outcome per email.
 - *Website chat:* follow `kb_website_chatbot_agent.md` — collect name + email first, never mention any internal system, fetch services live, and register new visitors as a Lead (never call it a "lead" to the visitor).
 - *CRM internal:* direct and efficient for staff; look up availability, pre-fill from records, confirm required fields, never override admin settings or assign non-member providers.
 
@@ -134,13 +134,13 @@ The agent's knowledge base is the eight source files below, all included with th
 
 **7. `kb_customer_faqs_and_edge_cases.md` — Behavioral reference.** Twelve common customer FAQs with ideal response patterns; twelve edge cases (temporarily-unavailable and not-in-use services, duplicate matches, past dates, departed members, reschedule-limit, incomplete addresses, disputed appointments, no same-day slots, competitor questions, past-service complaints, mandatory job sheets); and a tone reference for common emotional states.
 
-**8. `kb_industry_scenarios.md` — Industry playbook.** Context, typical services, booking constraints, and example flows for five industries — automobile service, wellness & beauty, home services, healthcare & professional consultation, and field services — plus cross-industry patterns (ambiguous service names, duration questions, discount requests, booking for someone else, angry customers).
+**8. `kb_industry_scenarios.md` — Industry playbook.** Context, typical services, booking constraints, and example flows for five industries — general medicine, dental & specialty care, diagnostic & lab services, specialist & surgeon consultations, and mental health & counseling — plus cross-industry patterns (ambiguous service names, duration questions, discount requests, booking for someone else, angry patients).
 
-**Workdrive link : [AppointPal_Knowledge_Base](https://workdrive.zoho.in/folder/5p3ayc5ebe604415044d3b47eb112be19b24f)**
+**Workdrive link : [MediBook_Knowledge_Base](https://workdrive.zoho.in/folder/5p3ayc5ebe604415044d3b47eb112be19b24f)**
 
 ### Custom tools
 
-None. AppointPal uses Zoho CRM system tools only (see the Tools row in the Overview). No custom tool YAML or Python functions are required.
+None. MediBook uses Zoho CRM system tools only (see the Tools row in the Overview). No custom tool YAML or Python functions are required.
 
 ### Custom Guardrails
 
@@ -149,7 +149,7 @@ None. AppointPal uses Zoho CRM system tools only (see the Tools row in the Overv
 - Always resolve exactly one customer record before acting; create a new record only after searching, and never create duplicates.
 - Always confirm the provider is a member of the chosen service and passes the two-layer availability check (no unavailability window + no overlapping appointment) before booking or rescheduling.
 - Always extract every stated detail from the email body into the structured table before running the checklist; ask only for items genuinely missing.
-- Follow each path's signature convention — email path: `Zia Agent - AppointPal`; website chatbot: `AppointPal (AI Assistant)`; CRM staff: the staff member's own name — and tag every agent-created appointment and Task so all agent activity is auditable, creating the tag if absent (per module).
+- Follow each path's signature convention — email path: `Zia Agent - MediBook`; website chatbot: `MediBook (AI Assistant)`; CRM staff: the staff member's own name — and tag every agent-created appointment and Task so all agent activity is auditable, creating the tag if absent (per module).
 - Always confirm before every write in staff and chatbot modes; always ensure every genuine email request ends in exactly one outcome — an appointment or a Task, never neither.
 
 **Don'ts**
@@ -176,15 +176,16 @@ None. AppointPal uses Zoho CRM system tools only (see the Tools row in the Overv
 
 ## Observability
 
-- **Logs and execution history:** Every run produces a run summary recording the outcome and reason — including silent no-ops (unknown sender, non-booking email, mismatched-sender reply). Every agent-created appointment and Task carries the `Zia Agent - AppointPal` tag and, for appointments, an `Additional_Information` stamp, enabling after-the-fact filtering and audit of exactly what the agent created.
+- **Logs and execution history:** Every run produces a run summary recording the outcome and reason — including silent no-ops (unknown sender, non-booking email, mismatched-sender reply). Every agent-created appointment and Task carries the `Zia Agent - MediBook` tag and, for appointments, an `Additional_Information` stamp, enabling after-the-fact filtering and audit of exactly what the agent created.
 - **Error handling:** Documented error/fix tables in each KB (invalid provider, location mismatch, past time, missing address, message-id format, `DEPENDENT_FIELD_*` on reschedule, tag limits, Send Mail From-address, etc.). Retries are limited to one per action and only with a changed payload; identical retries are forbidden. Fail-safe ordering creates the escalation Task the moment an action fails without a usable fallback, so an outcome always survives — and a successful write whose confirmation email failed still produces a Task so the customer is reached.
 - **Monitoring and metrics:** Recommended reports/dashboards from the Appointments KB — appointments per service, reschedules/cancellations by month, appointments per member, and creation trends — plus filtering by the agent tag to measure agent-created volume and escalation rate.
 - **Debugging:** Common-errors tables map each failure to its cause and fix; the email path documents the exact message-id and `user_id` pitfalls; the extraction-before-checklist worked example makes the most common failure mode reproducible and testable.
 
 ### Supporting Code
 
-None. AppointPal is implemented entirely within Zia Agent Studio using Zoho CRM system tools and the knowledge base; there are no backend functions, Catalyst/serverless code, middleware, or helper scripts.
+None. MediBook is implemented entirely within Zia Agent Studio using Zoho CRM system tools and the knowledge base; there are no backend functions, Catalyst/serverless code, middleware, or helper scripts.
 
 ---
 
-*Single-agent submission. AppointPal operates as one agent across three deployment modes governed by a shared booking domain; no multi-agent setup is used.*
+*Single-agent submission. MediBook operates as one agent across three deployment modes governed by a shared booking domain; no multi-agent setup is used.*
+
