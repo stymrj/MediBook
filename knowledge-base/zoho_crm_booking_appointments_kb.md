@@ -17,7 +17,7 @@ The Appointments module is added automatically when the Services module is enabl
 
 ## Appointments Layouts
 
-Three layouts exist: **Create**, **Reschedule Appointment**, and **Cancel Appointment**. Admins can add custom fields to any layout (e.g., vehicle photo fields for car wash bookings, custom reschedule reason fields).
+Three layouts exist: **Create**, **Reschedule Appointment**, and **Cancel Appointment**. Admins can add custom fields to any layout (e.g., patient photo fields for medical records, custom reschedule reason fields).
 
 **Path:** Setup > Customization > Modules and Fields > Appointments > Standard Layout
 
