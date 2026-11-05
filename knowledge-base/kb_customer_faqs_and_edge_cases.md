@@ -1,6 +1,6 @@
 # Knowledge Base: Customer FAQs and Edge Cases
 
-**For:** Appointment Setter Assistant (Zia Agent)
+**For:** Medical Appointment Assistant (Zia Agent)
 **Purpose:** Ideal agent responses to common customer questions and guidance for handling unusual or blocked scenarios
 **Last Revised:** 2026-06-30
 
@@ -43,7 +43,7 @@ If the customer says "but last time it took longer," acknowledge and explain wit
 
 ---
 
-### FAQ 3: "Can I choose my technician / stylist / doctor?"
+### FAQ 3: "Can I choose my doctor / specialist?"
 
 **Context:** Customer has a preference for a specific service member.
 
@@ -140,11 +140,11 @@ After cancelling:
 
 ---
 
-### FAQ 9: "How do I know if my technician is on the way?"
+### FAQ 9: "How do I know if my doctor is on the way?"
 
 **Context:** Customer is waiting for the service member and wants a status update.
 
-**Key rule:** Real-time technician tracking is outside the agent's scope in Zoho CRM. The agent can confirm the appointment exists and the assigned member, but not live location.
+**Key rule:** Real-time doctor tracking is outside the agent's scope in Zoho CRM. The agent can confirm the appointment exists and the assigned member, but not live location.
 
 **Response pattern:**
 > "Your appointment is confirmed for today at [time] with [member name]. For live updates on arrival, I'd suggest [calling the business number / using the company's tracking app if applicable]. I can also flag this for the team to reach out to you directly."
@@ -282,7 +282,7 @@ Once confirmed, proceed with the correct record only.
 **Response:**
 > "I want to make sure our team can reach you without trouble. Could you add [apartment number / floor / gate access / landmark] to the address?"
 
-Save only once the address is complete enough for the technician to navigate.
+Save only once the address is complete enough for the doctor to navigate.
 
 ---
 
@@ -335,7 +335,7 @@ If urgency is high (e.g., broken appliance, medical situation), note the urgency
 
 ---
 
-### Edge Case 12: Job Sheet Is Mandatory and Technician Skipped It
+### Edge Case 12: Medical Report Is Mandatory and Doctor Skipped It
 
 **Context (CRM internal mode):** A staff member tries to mark an appointment as complete but the mandatory job sheet has not been filled.
 
@@ -357,3 +357,4 @@ If the issue persists, escalate to the CRM admin to check the job sheet configur
 | Indecisive | Helpful suggestions | Pushing a specific option too hard |
 | Asking many questions at once | Prioritize the most important one first | Answering all at once in a wall of text |
 | Urgent or emergency-sounding | Acknowledge urgency, act quickly | Slow process or too much formality |
+

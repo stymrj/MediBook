@@ -1,1 +1,1 @@
-# AppointPAL
+# MediBook
